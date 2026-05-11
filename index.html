@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emmanuel Nimoh — IT Data Governance & Cybersecurity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg-elevated: #11141a;
+    --surface: #161a22;
+    --border: #1f2530;
+    --border-bright: #2a3142;
+    --text: #e8ebf0;
+    --text-dim: #8a93a6;
+    --text-faint: #4a5366;
+    --accent: #d4ff3f;
+    --accent-dim: #a8cc2f;
+    --signal: #ff5e3a;
+    --grid: rgba(212, 255, 63, 0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter Tight', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    background-position: -1px -1px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 20% 0%, rgba(212, 255, 63, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(255, 94, 58, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { position: relative; z-index: 1; }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 12, 15, 0.7);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 24px; }
+  .topbar-left .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .topbar .id { color: var(--text-dim); }
+  .topbar .id span { color: var(--accent); }
+  .topbar-right { display: flex; gap: 28px; color: var(--text-dim); }
+  .topbar-right a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .topbar-right a:hover { color: var(--accent); }
+  .topbar-right a::before { content: '0' counter(nav-counter) ' / '; counter-increment: nav-counter; opacity: 0.5; }
+  .topbar-right { counter-reset: nav-counter; }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    padding: 140px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-meta::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--text-faint);
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(56px, 8vw, 112px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+    font-variation-settings: 'opsz' 144;
+  }
+  .hero h1 .italic {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero h1 .ampersand {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text-dim);
+  }
+
+  .hero-tagline {
+    font-size: 18px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    max-width: 520px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-tagline strong { color: var(--text); font-weight: 500; }
+
+  .hero-actions { display: flex; gap: 16px; align-items: center; }
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border: 1px solid var(--border-bright);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn .arrow { transition: transform 0.2s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* Hero right - terminal card */
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(212, 255, 63, 0.05);
+  }
+  .hero-card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+  .hero-card-header .traffic { display: flex; gap: 6px; }
+  .hero-card-header .traffic span {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border-bright);
+  }
+  .hero-card-header .filename { margin-left: 12px; }
+
+  .hero-card-body {
+    padding: 28px 28px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .hero-card-body .line { display: flex; gap: 18px; }
+  .hero-card-body .num { color: var(--text-faint); user-select: none; }
+  .hero-card-body .key { color: var(--accent); }
+  .hero-card-body .val { color: var(--text); }
+  .hero-card-body .str { color: #e8ebf0; }
+  .hero-card-body .arr { color: var(--text-dim); }
+  .hero-card-body .comment { color: var(--text-faint); font-style: italic; }
+  .hero-card-body .cursor {
+    display: inline-block;
+    width: 8px; height: 16px;
+    background: var(--accent);
+    vertical-align: middle;
+    animation: blink 1s steps(2) infinite;
+    margin-left: 4px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ============ STATUS STRIP ============ */
+  .status-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    max-width: 1400px;
+    margin: 60px auto 0;
+    background: rgba(17, 20, 26, 0.4);
+  }
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .status-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .status-item .value {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .status-item .value .accent { color: var(--accent); }
+
+  /* ============ SECTION ============ */
+  section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 140px 40px;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '§';
+    color: var(--text-faint);
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    font-variation-settings: 'opsz' 144;
+    max-width: 800px;
+  }
+  .section-title .italic { font-style: italic; color: var(--accent); }
+
+  .section-intro {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 80px;
+    font-weight: 300;
+  }
+
+  /* ============ ABOUT ============ */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-left {
+    position: sticky;
+    top: 120px;
+  }
+  .about-degree {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 24px;
+    margin-bottom: 32px;
+  }
+  .about-degree .school {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .about-degree .name {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .about-degree .name .italic { font-style: italic; color: var(--accent); }
+  .about-degree .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .about-prose p {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--text);
+    font-weight: 300;
+    margin-bottom: 24px;
+    font-variation-settings: 'opsz' 96;
+  }
+  .about-prose p:first-of-type::first-letter {
+    font-size: 64px;
+    float: left;
+    line-height: 0.8;
+    padding: 8px 12px 0 0;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .about-prose p .italic { font-style: italic; color: var(--accent); }
+  .about-prose p .underline {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+
+  /* ============ EXPERIENCE TIMELINE ============ */
+  .timeline {
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 140px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 60px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .exp-item:hover {
+    background: linear-gradient(90deg, transparent, rgba(212, 255, 63, 0.03), transparent);
+  }
+  .exp-item:hover .exp-marker {
+    background: var(--accent);
+    box-shadow: 0 0 20px var(--accent);
+  }
+  .exp-item:hover .exp-title { color: var(--accent); }
+
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    padding-top: 6px;
+  }
+  .exp-date .end { color: var(--text); }
+  .exp-date .duration {
+    display: block;
+    margin-top: 8px;
+    color: var(--text-dim);
+    font-size: 10px;
+  }
+
+  .exp-marker {
+    position: absolute;
+    left: 137px;
+    top: 50px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border-bright);
+    transition: all 0.3s;
+  }
+  .exp-content { padding-left: 40px; }
+
+  .exp-company {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .exp-company .badge {
+    padding: 3px 10px;
+    border: 1px solid var(--border-bright);
+    border-radius: 100px;
+    font-size: 9px;
+    color: var(--accent);
+    border-color: rgba(212, 255, 63, 0.3);
+  }
+
+  .exp-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    transition: color 0.3s;
+  }
+  .exp-title .italic { font-style: italic; }
+
+  .exp-desc {
+    font-size: 16px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    margin-bottom: 20px;
+    max-width: 720px;
+    font-weight: 300;
+  }
+  .exp-desc strong { color: var(--text); font-weight: 500; }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .exp-tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ============ SKILLS GRID ============ */
+  .skills-section { padding-top: 60px; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .skill-block {
+    padding: 40px 32px;
+    background: var(--bg);
+    transition: background 0.3s;
+    position: relative;
+    min-height: 220px;
+  }
+  .skill-block:hover {
+    background: var(--surface);
+  }
+  .skill-block:hover .skill-num { color: var(--accent); }
+
+  .skill-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    transition: color 0.3s;
+  }
+  .skill-name {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .skill-name .italic { font-style: italic; color: var(--accent); }
+  .skill-list {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* ============ CONTACT ============ */
+  .contact {
+    border-top: 1px solid var(--border);
+    padding: 120px 40px;
+    background: var(--bg-elevated);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: 'CONTACT';
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Fraunces', serif;
+    font-size: 240px;
+    font-weight: 300;
+    color: rgba(212, 255, 63, 0.04);
+    letter-spacing: 0.1em;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .contact-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+  .contact h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .contact h2 .italic { font-style: italic; color: var(--accent); }
+  .contact .email {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--text-dim);
+    margin-bottom: 48px;
+    display: inline-block;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-bright);
+    transition: all 0.2s;
+  }
+  .contact .email:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+  footer .accent { color: var(--accent); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .topbar { padding: 12px 20px; }
+    .topbar-right { display: none; }
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 120px 20px 60px;
+      gap: 48px;
+    }
+    .status-strip { grid-template-columns: repeat(2, 1fr); padding: 24px 20px; gap: 24px; }
+    section { padding: 80px 20px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-left { position: static; }
+    .timeline::before { left: 20px; }
+    .exp-item {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 32px 0 32px 50px;
+    }
+    .exp-marker { left: 17px; top: 40px; }
+    .exp-content { padding-left: 0; }
+    .exp-title { font-size: 24px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .contact { padding: 80px 20px; }
+    footer { flex-direction: column; gap: 12px; padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="dot"></span>
+      <span class="id">EN <span>/</span> 2026</span>
+    </div>
+    <div class="topbar-right">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-meta">Cybersecurity · Data Governance · Cincinnati, OH</div>
+      <h1>
+        Emmanuel<br>
+        <span class="ampersand">&amp;</span> the architecture<br>
+        of <span class="italic">trust.</span>
+      </h1>
+      <p class="hero-tagline">
+        IT Data Governance Analyst at <strong>Fifth Third Bank</strong>. B.S. Cybersecurity from the University of Cincinnati. Building the controls, frameworks, and pipelines that keep <strong>Fortune&nbsp;500</strong> data honest.
+      </p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn btn-primary">View Experience <span class="arrow">→</span></a>
+        <a href="#contact" class="btn">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-header">
+        <div class="traffic"><span></span><span></span><span></span></div>
+        <span class="filename">~ / emmanuel.profile.json</span>
+      </div>
+      <div class="hero-card-body">
+        <div class="line"><span class="num">01</span><span class="comment">// active engagement</span></div>
+        <div class="line"><span class="num">02</span><span>{</span></div>
+        <div class="line"><span class="num">03</span><span>&nbsp;&nbsp;<span class="key">"role"</span>: <span class="str">"IT Data Governance Analyst I"</span>,</span></div>
+        <div class="line"><span class="num">04</span><span>&nbsp;&nbsp;<span class="key">"org"</span>: <span class="str">"Fifth Third Bank"</span>,</span></div>
+        <div class="line"><span class="num">05</span><span>&nbsp;&nbsp;<span class="key">"focus"</span>: [</span></div>
+        <div class="line"><span class="num">06</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Master Loans &amp; Leases"</span>,</span></div>
+        <div class="line"><span class="num">07</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"GRC"</span>,</span></div>
+        <div class="line"><span class="num">08</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Data Engineering"</span></span></div>
+        <div class="line"><span class="num">09</span><span>&nbsp;&nbsp;],</span></div>
+        <div class="line"><span class="num">10</span><span>&nbsp;&nbsp;<span class="key">"clearance"</span>: <span class="str">"Security+ Certified"</span>,</span></div>
+        <div class="line"><span class="num">11</span><span>&nbsp;&nbsp;<span class="key">"stack"</span>: <span class="str">"AI · Cloud · GRC"</span>,</span></div>
+        <div class="line"><span class="num">12</span><span>&nbsp;&nbsp;<span class="key">"status"</span>: <span class="str">"shipping"</span><span class="cursor"></span></span></div>
+        <div class="line"><span class="num">13</span><span>}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div class="status-item">
+      <div class="label">Current Role</div>
+      <div class="value">Data Governance <span class="accent">/</span> <em>Fifth Third</em></div>
+    </div>
+    <div class="status-item">
+      <div class="label">Education</div>
+      <div class="value">B.S. <em>Cybersecurity</em></div>
+    </div>
+    <div class="status-item">
+      <div class="label">Certified</div>
+      <div class="value">CompTIA <span class="accent">Security+</span></div>
+    </div>
+    <div class="status-item">
+      <div class="label">Domains</div>
+      <div class="value">AI <span class="accent">·</span> Cloud <span class="accent">·</span> GRC</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">01 — About</div>
+    <div class="about-grid">
+      <div class="about-left">
+        <div class="about-degree">
+          <div class="school">University of Cincinnati · 2020 — 2025</div>
+          <div class="name">Bachelor of Science<br><span class="italic">Cybersecurity</span></div>
+          <div class="meta">Minor · Finance, General</div>
+        </div>
+      </div>
+      <div class="about-prose">
+        <p>I'm a cybersecurity professional with a quiet preference for the unglamorous half of the field — the <span class="italic">governance</span>, the documentation, the controls that make a billion-dollar data product trustworthy at three in the morning.</p>
+        <p>My career has moved through three Fortune 500 environments: <span class="underline">Chick-fil-A's corporate support center</span>, where I shipped React, monitored OT/IoT traffic at the world's largest lemonade distribution center, and authored SOPs for vulnerability remediation across OT, IT, and IoT estates — and now <span class="underline">Fifth Third Bank</span>, where I lead data management for the centralized Master Loans &amp; Leases data product in production through Brooksource.</p>
+        <p>I care about the seams. The handoffs between data engineering and risk, between cloud architecture and compliance, between what a system <span class="italic">should</span> do and what it <span class="italic">actually</span> does at scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">02 — Experience</div>
+    <h2 class="section-title">Five roles, three Fortune 500s, <span class="italic">one through-line.</span></h2>
+    <p class="section-intro">From software engineering to threat monitoring to enterprise data governance — each role compounded into the next.</p>
+
+    <div class="timeline">
+
+      <div class="exp-item">
+        <div class="exp-date">
+          NOV 2025<br>— <span class="end">PRESENT</span>
+          <span class="duration">7 mos · On-site</span>
+        </div>
+        <div class="exp-marker"></div>
+        <div class="exp-content">
+          <div class="exp-company">Fifth Third Bank <span class="badge">Fortune 500</span> <span class="badge">Active</span></div>
+          <div class="exp-title">IT Data Governance <span class="italic">Analyst I</span></div>
+          <div class="exp-desc">Data management lead for the <strong>centralized Master Loans &amp; Leases data product</strong> currently in production through Brooksource. Owning governance frameworks, lineage, and compliance posture for one of the bank's most critical data assets.</div>
+          <div class="exp-tags">
+            <span>Data Engineering</span>
+            <span>Governance</span>
+            <span>Risk Management</span>
+            <span>GRC</span>
+            <span>Compliance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">
+          JAN 2025<br>— <span class="end">MAY 2025</span>
+          <span class="duration">5 mos · Full-time</span>
+        </div>
+        <div class="exp-marker"></div>
+        <div class="exp-content">
+          <div class="exp-company">Chick-fil-A Corporate Support Center <span class="badge">Fortune 500</span></div>
+          <div class="exp-title">Business Analyst <span class="italic">III Co-op</span></div>
+          <div class="exp-desc">Authored a comprehensive <strong>Standard Operating Procedure</strong> documenting step-by-step processes for identifying, monitoring, and remediating vulnerable OT, IT, and IoT devices across the enterprise.</div>
+          <div class="exp-tags">
+            <span>Project Planning</span>
+            <span>OT Security</span>
+            <span>SOP Authorship</span>
+            <span>Vulnerability Mgmt</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">
+          AUG 2024<br>— <span class="end">DEC 2024</span>
+          <span class="duration">5 mos · Part-time</span>
+        </div>
+        <div class="exp-marker"></div>
+        <div class="exp-content">
+          <div class="exp-company">University of Cincinnati</div>
+          <div class="exp-title">Undergraduate <span class="italic">Teacher Assistant</span></div>
+          <div class="exp-desc">Supported instruction and student communication for <strong>Information Security &amp; Assurance (IT2030C)</strong> and two sections of <strong>Network Infrastructure Management (IT2035C)</strong>. Graded labs, mentored juniors through hands-on security exercises.</div>
+          <div class="exp-tags">
+            <span>System Administration</span>
+            <span>University Teaching</span>
+            <span>InfoSec Curriculum</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">
+          MAY 2024<br>— <span class="end">AUG 2024</span>
+          <span class="duration">4 mos · Full-time</span>
+        </div>
+        <div class="exp-marker"></div>
+        <div class="exp-content">
+          <div class="exp-company">Chick-fil-A Corporate Support Center <span class="badge">Fortune 500</span></div>
+          <div class="exp-title">Business Analyst <span class="italic">II Co-op</span></div>
+          <div class="exp-desc">Stationed at <strong>the largest lemonade distribution center in the world</strong>. Maintained continuous visibility and threat monitoring across all connected OT/IoT devices and authored real-time security alerts for anomalous behavior.</div>
+          <div class="exp-tags">
+            <span>Vulnerability Management</span>
+            <span>Information Security</span>
+            <span>Threat Monitoring</span>
+            <span>OT/IoT</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date">
+          AUG 2023<br>— <span class="end">DEC 2023</span>
+          <span class="duration">5 mos · Full-time</span>
+        </div>
+        <div class="exp-marker"></div>
+        <div class="exp-content">
+          <div class="exp-company">Chick-fil-A Corporate Support Center <span class="badge">Fortune 500</span></div>
+          <div class="exp-title">Software Engineer <span class="italic">I Co-op</span></div>
+          <div class="exp-desc">Leveraged cloud-based software products and modern coding practices in an <strong>agile, scrum-driven environment</strong>. Worked across the React stack with AWS Identity and Access Management as a core security primitive.</div>
+          <div class="exp-tags">
+            <span>React.js</span>
+            <span>AWS IAM</span>
+            <span>Agile / Scrum</span>
+            <span>Cloud Engineering</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="skills-section">
+    <div class="section-label">03 — Capabilities</div>
+    <h2 class="section-title">A practitioner's <span class="italic">toolkit.</span></h2>
+
+    <div class="skills-grid">
+      <div class="skill-block">
+        <div class="skill-num">/ 01</div>
+        <div class="skill-name">Governance <span class="italic">&amp; Risk</span></div>
+        <div class="skill-list">Data Governance · GRC frameworks · Risk Management · Compliance · Vulnerability Management · SOP Authorship</div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-num">/ 02</div>
+        <div class="skill-name">Security <span class="italic">Operations</span></div>
+        <div class="skill-list">Information Security · Threat Monitoring · OT/IoT Security · Network Infrastructure · CompTIA Security+</div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-num">/ 03</div>
+        <div class="skill-name">Cloud <span class="italic">&amp; Engineering</span></div>
+        <div class="skill-list">AWS · IAM · React.js · Cloud Architecture · Data Engineering · Agile / Scrum methodologies</div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-num">/ 04</div>
+        <div class="skill-name">Data <span class="italic">Stewardship</span></div>
+        <div class="skill-list">Master Data Management · Data Lineage · Data Quality · Loans &amp; Leases domain expertise</div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-num">/ 05</div>
+        <div class="skill-name">Emerging <span class="italic">Tech</span></div>
+        <div class="skill-list">AI &amp; ML literacy · Cloud security posture · Modern coding practices · Continuous learning posture</div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-num">/ 06</div>
+        <div class="skill-name">Communication <span class="italic">&amp; Mentorship</span></div>
+        <div class="skill-list">University-level teaching · Cross-functional documentation · Stakeholder reporting · Project Planning</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- CONTACT -->
+<div class="contact" id="contact">
+  <div class="contact-content">
+    <div class="section-label" style="justify-content:center; display:flex;">04 — Contact</div>
+    <h2>Let's build something <span class="italic">trustworthy.</span></h2>
+    <a href="#" class="email">emmanuel.nimoh — open to opportunities</a>
+    <div class="contact-links">
+      <a href="https://linkedin.com/in/emmanuel-nimoh/" class="btn btn-primary" target="_blank" rel="noopener">LinkedIn <span class="arrow">→</span></a>
+      <a href="#" class="btn">Download Resume</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>EMMANUEL NIMOH <span class="accent">©</span> 2026</div>
+  <div>CINCINNATI, OH <span class="accent">·</span> EST. 2020</div>
+  <div>SECURED <span class="accent">·</span> GOVERNED <span class="accent">·</span> SHIPPED</div>
+</footer>
+
+</body>
+</html>
